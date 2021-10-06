@@ -1,0 +1,21 @@
+{
+  "name": "client-server-tcp",
+  "version": "1.0.0",
+  "description": "Server and client communication through tcp connection",
+  "main": "index.js",
+  "scripts": {
+    "server" : "node server.js",
+    "client" : "node client.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaScheggia/client-server-tcp.git"
+  },
+  "author": "D. C.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LaScheggia/client-server-tcp/issues"
+  },
+  "homepage": "https://github.com/LaScheggia/client-server-tcp#readme"
+}
