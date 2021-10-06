@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "examples": [
+    {
+      "command": {
+        "type": "SUM.REQUEST",
+        "payload": {
+          "x": 1,
+          "y": 2
+        }
+      }
+    }
+  ],
+  "properties": {
+    "command": {
+      "type": "object",
+      "default": {},
+      "properties": {
+        "type": {
+          "type": "string",
+          "default": ""
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "integer",
+              "default": 0
+            },
+            "y": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          "required": ["x", "y"]
+        }
+      },
+      "required": ["type", "payload"]
+    }
+  },
+  "required": ["command"]
+}

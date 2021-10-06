@@ -14,6 +14,6 @@ let server = net.createServer(socket => {
 
 //Putting the server on listen
 server.listen(port, () => {
-  
   console.log(`Server listening for connection requests on socket localhost:${port}.`);
 });
+

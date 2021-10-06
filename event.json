@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "examples": [
+    {
+      "event": {
+        "type": "SUM.RESULT",
+        "payload": {
+          "result": 3,
+          "error": null
+        }
+      }
+    }
+  ],
+  "required": ["event"],
+  "type": "object",
+  "properties": {
+    "event": {
+      "required": ["type", "payload"],
+      "type": "object",
+      "properties": {
+        "type": {
+          "default": "",
+          "type": "string"
+        },
+        "payload": {
+          "required": ["result", "error"],
+          "type": "object",
+          "properties": {
+            "result": {
+              "default": 0,
+              "type": "integer"
+            },
+            "error": {
+              "default": null,
+              "type": ["null", "string"]
+            }
+          }
+        }
+      }
+    }
+  }
+}
