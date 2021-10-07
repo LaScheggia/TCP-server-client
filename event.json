@@ -5,7 +5,7 @@
       "event": {
         "type": "SUM.RESULT",
         "payload": {
-          "result": 3,
+          "result": null,
           "error": null
         }
       }
