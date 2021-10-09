@@ -1,6 +1,7 @@
 // Including Nodejs' net module and json scheme validator.
 const net = require("net");
 const Ajv = require("ajv");
+const winston = require('winston');
 
 //Importing requests to be sent to server
 const commandSuccess = require("./commands/success.json");
