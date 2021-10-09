@@ -1,7 +1,14 @@
-// Including Nodejs' net module.
-const net = require("net"); 
+// Including Nodejs' net module and json scheme validator.
+const net = require("net");
+const Ajv = require("ajv");
 
-const command_success = require("./command_success.json");
+//Importing requests to be sent to server
+const commandSuccess = require("./commands/success.json");
+const commandError = require("./commands/error.json");
+
+//Ajv instance △
+const ajv = new Ajv();
+const eventSchema = require("./schemas/event.json");
 
 //Selecting the port connection
 const options = {
@@ -15,16 +22,24 @@ let client = net.connect(options, () => {
   })
 
   client.on('data', data => {
-    const commandRes = JSON.parse(data.toString("utf8"));
-    const sumRes = commandRes.examples[0].event.payload.result;
+    const event = JSON.parse(data.toString("utf8"));
+    if (ajv.validate(eventSchema, event)) {
+      const error = event.event.payload.error;
 
-    console.log(sumRes);
-    client.destroy();
+      if (error !== null) {
+        console.log("The command encountered an error:", error);
+      } else {
+        console.log('The result is:', event.event.payload.result);
+      }
+    } else {
+      console.log('The schema is not validated');
+    }
   });
 
   console.log('Connected to Server!');
   
   //Sending json stringified to server
-  client.write(JSON.stringify(command_success));
+  client.write(JSON.stringify(commandSuccess));
+  client.write(JSON.stringify(commandError));
 });
 

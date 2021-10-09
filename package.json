@@ -4,9 +4,9 @@
   "description": "Server and client communication through tcp connection",
   "main": "index.js",
   "scripts": {
-    "server" : "node server.js",
-    "client-win" : "set CLIENT_TCP_PORT=8080 && node client.js",
-    "client-unix" : "CLIENT_TCP_PORT=8080 node client.js",
+    "server": "node server.js",
+    "client-win": "set CLIENT_TCP_PORT=9045 && node client.js",
+    "client-unix": "CLIENT_TCP_PORT=9045 node client.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/LaScheggia/client-server-tcp/issues"
   },
-  "homepage": "https://github.com/LaScheggia/client-server-tcp#readme"
+  "homepage": "https://github.com/LaScheggia/client-server-tcp#readme",
+  "dependencies": {
+    "ajv": "^8.6.3"
+  }
 }

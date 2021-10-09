@@ -1,12 +1,13 @@
-// Including Nodejs' net module.
+// Including Nodejs' net module and json scheme validator.
 const net = require("net");
-const { endianness } = require("os");
+const Ajv = require("ajv");
 
 //Loading server config
 const config = require("./driver_config.json");
 
-//Requesting event.json
-const event = require("./event.json");
+//Ajv instance ⧈
+const ajv = new Ajv();
+const commandSchema = require("./schemas/command.json");
 
 //Creating a func to sum
 function sumNumbers(x, y){
@@ -23,15 +24,35 @@ let server = net.createServer(socket => {
 
   socket.on('data', data => {
     const command = JSON.parse(data.toString("utf8"));
-    const payload = command.examples[0].command.payload;
-    const sumResult = sumNumbers(payload.x, payload.y);
-    event.examples[0].event.payload.result = sumResult;
+
+    let event = null;
+
+    if (ajv.validate(commandSchema, command)) {
+      console.log("Received valid command from client");
+      const sum = sumNumbers(command.command.payload.x, command.command.payload.y);
+      event = {
+        event: {
+          type: command.command.type,
+          payload: {
+            result: sum,
+            error: null
+          }
+        }
+      };      
+    } else {
+      console.log("Received invalid command from client");
+      event = {
+        event: {
+          type: "UNKNOWN",
+          payload: {
+            result: 0,
+            error: "Command not recognized"
+          }
+        }
+      };
+    }
 
     socket.write(JSON.stringify(event));
-    //console.log(command);
-    //console.log(payload);
-    //console.log(sumResult);
-    //console.log(JSON.stringify(event));
   });
 });
 

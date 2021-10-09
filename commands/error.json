@@ -1,0 +1,8 @@
+{
+  "command": {
+    "type": "SUM.REQUEST",
+    "payload": {
+      "z": false
+    }
+  }
+}
