@@ -1,8 +1,9 @@
 // Including Nodejs' net module.
 const net = require("net");
+const { endianness } = require("os");
 
-//This is server's listening port
-const port = 8080;
+//Loading server config
+const config = require("./driver_config.json");
 
 //Requesting event.json
 const event = require("./event.json");
@@ -14,8 +15,13 @@ function sumNumbers(x, y){
 
 //Creating server with net.createServer
 let server = net.createServer(socket => {
-  socket.on('data', data => {
+  console.log('Client connected');
 
+  socket.on('end', () => {
+    console.log('Client disconnected');
+  })
+
+  socket.on('data', data => {
     const command = JSON.parse(data.toString("utf8"));
     const payload = command.examples[0].command.payload;
     const sumResult = sumNumbers(payload.x, payload.y);
@@ -30,7 +36,7 @@ let server = net.createServer(socket => {
 });
 
 //Putting the server on listen
-server.listen(port, () => {
-  console.log(`Server listening for connection requests on socket localhost:${port}.`);
+server.listen(config.port, () => {
+  console.log(`Server listening for connection requests on socket localhost:${config.port}.`);
 });
 
