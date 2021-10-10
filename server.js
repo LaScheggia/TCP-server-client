@@ -28,8 +28,8 @@ const logger = winston.createLogger({
 });
 
 //Creating a func to sum
-function sumNumbers(x, y){
-  return x+y;
+function sumNumbers(x, y) {
+  return x + y;
 }
 
 //Creating server with net.createServer
@@ -38,9 +38,14 @@ let server = net.createServer(socket => {
 
   socket.on('end', () => {
     logger.info('Client disconnected');
-  })
+  });
+
+  socket.on('error', error => {
+    logger.error(`An error was encountered: ${error}`);
+  });
 
   socket.on('data', data => {
+    logger.info("Received message from client");
     const command = JSON.parse(data.toString("utf8"));
 
     let event = null;
@@ -70,6 +75,7 @@ let server = net.createServer(socket => {
       };
     }
 
+    logger.info("Sending response to client");
     socket.write(JSON.stringify(event));
   });
 });

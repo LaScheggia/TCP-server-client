@@ -37,10 +37,16 @@ const logger = winston.createLogger({
 let client = net.connect(options, () => {
   client.on('end', () => {
     logger.info('Disconnected from server');
-  })
+  });
+
+  client.on('error', error => {
+    logger.error(`An error was encountered: ${error}`);
+  });
 
   client.on('data', data => {
+    logger.info("Received message from server");
     const event = JSON.parse(data.toString("utf8"));
+    
     if (ajv.validate(eventSchema, event)) {
       const error = event.event.payload.error;
 
@@ -57,7 +63,10 @@ let client = net.connect(options, () => {
   logger.error('Connected to Server!');
   
   //Sending json stringified to server
+  logger.info('Sending command success to server');
   client.write(JSON.stringify(commandSuccess));
+
+  logger.info('Sending command error to server');
   client.write(JSON.stringify(commandError));
 });
 
