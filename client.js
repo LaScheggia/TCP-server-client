@@ -16,10 +16,27 @@ const options = {
   port: process.env.CLIENT_TCP_PORT,
 };
 
+//Add winston logger instance with custom format
+const logFormat = winston.format.printf(({ level, message, label, timestamp }) => {
+  return `${timestamp} [${label}] ${level}: ${message}`;
+});
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.label({ label: 'tcp-client' }),
+    winston.format.timestamp(),
+    logFormat
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'client.log' }),
+  ],
+});
+
 //Connection
 let client = net.connect(options, () => {
   client.on('end', () => {
-    console.log('Disconnected from server');
+    logger.info('Disconnected from server');
   })
 
   client.on('data', data => {
@@ -28,16 +45,16 @@ let client = net.connect(options, () => {
       const error = event.event.payload.error;
 
       if (error !== null) {
-        console.log("The command encountered an error:", error);
+        logger.error(`The command encountered an error: ${error}`);
       } else {
-        console.log('The result is:', event.event.payload.result);
+        logger.info(`The result is: ${event.event.payload.result}`);
       }
     } else {
-      console.log('The schema is not validated');
+      logger.error('The schema is not validated');
     }
   });
 
-  console.log('Connected to Server!');
+  logger.error('Connected to Server!');
   
   //Sending json stringified to server
   client.write(JSON.stringify(commandSuccess));
