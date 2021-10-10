@@ -1,4 +1,0 @@
-2021-10-09T14:21:38.588Z [tcp-server] info: Server listening for connection requests on socket localhost:9045.
-2021-10-09T14:21:44.194Z [tcp-server] info: Client connected
-2021-10-09T14:21:44.248Z [tcp-server] info: Received valid command from client
-2021-10-09T14:21:44.249Z [tcp-server] error: Received invalid command from client
